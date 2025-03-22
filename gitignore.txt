@@ -1,0 +1,50 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+.ENV/
+model/
+.model/
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDEs and editors (e.g., PyCharm, VSCode, etc.)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Distribution/Packaging
+*.egg
+*.egg-info/
+dist/
+build/
+*.tar.gz
+
+# Testing
+*.log
+*.coverage
+*.coverage.*
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# .env file for environment variables (you may want to create your own .env file)
+.env
+
+# C extensions
+*.so
+
+# PyInstaller
+#  Uncomment the following line if you are using PyInstaller
+#  /dist
+#  /build
+
+# Pytest
+.cache
