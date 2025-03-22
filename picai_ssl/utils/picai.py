@@ -1,45 +1,45 @@
+
 import os
 import shutil
 from glob import glob
 
-# Base folder containing patient subfolders
-base_path = r"/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset"  #  Change this to your actual base directory
+# Base directory containing all patient folders (e.g., G:\)
+base_dir = r"/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset"  #  Change this to your base folder
 
-# Loop through each patient folder
-for patient_id in os.listdir(base_path):
-    patient_folder = os.path.join(base_path, patient_id)
-    if not os.path.isdir(patient_folder):
+# Expected modalities
+modalities = ['t2w', 'adc', 'hbv', 'seg']
+
+for patient_id in os.listdir(base_dir):
+    patient_path = os.path.join(base_dir, patient_id)
+    if not os.path.isdir(patient_path):
         continue
 
-    try:
-        print(f"\n Processing patient: {patient_id}")
+    print(f"\n Processing {patient_id}")
 
-        # Define expected subfolders
-        modalities = ['t2w', 'adc', 'hbv', 'seg']
-        for modality in modalities:
-            modality_folder = os.path.join(patient_folder, modality)
-            if not os.path.exists(modality_folder):
-                print(f" Missing modality folder: {modality}")
-                continue
+    for modality in modalities:
+        modality_folder = os.path.join(patient_path, modality)
 
-            # Find .nii.gz file in the modality folder
-            nii_files = glob(os.path.join(modality_folder, "*.nii.gz"))
-            if len(nii_files) == 0:
-                print(f" No .nii.gz file in {modality_folder}")
-                continue
+        if not os.path.exists(modality_folder):
+            print(f" Skipping missing folder: {modality_folder}")
+            continue
 
-            # Move and rename the file
-            src_file = nii_files[0]
-            dest_file = os.path.join(patient_folder, f"{modality}.nii.gz")
-            shutil.move(src_file, dest_file)
-            print(f" Moved {modality}: {os.path.basename(src_file)} → {os.path.basename(dest_file)}")
+        # Find any .nii.gz file inside the modality folder
+        nii_files = glob(os.path.join(modality_folder, "*.nii.gz"))
+        if not nii_files:
+            print(f" No .nii.gz file found in {modality_folder}")
+            continue
 
-            # Remove empty subfolder
+        src_file = nii_files[0]
+        dest_file = os.path.join(patient_path, f"{modality}.nii.gz")
+
+        # Move and rename the file
+        shutil.move(src_file, dest_file)
+        print(f" Moved {os.path.basename(src_file)} → {modality}.nii.gz")
+
+        # Remove empty modality folder
+        try:
             os.rmdir(modality_folder)
+        except Exception as e:
+            print(f" Could not remove folder {modality_folder}: {e}")
 
-        print(f" Done flattening patient folder: {patient_id}")
-
-    except Exception as e:
-        print(f" Error processing {patient_id}: {e}")
-
-print("\n All patient folders flattened successfully!")
+print("\n🎉 All patient folders successfully flattened.")
