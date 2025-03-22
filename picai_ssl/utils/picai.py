@@ -3,7 +3,7 @@ import shutil
 from glob import glob
 
 # Base folder containing patient subfolders
-base_path = r"G:\your_dataset_path"  #  Change this to your actual base directory
+base_path = r"/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset"  #  Change this to your actual base directory
 
 # Loop through each patient folder
 for patient_id in os.listdir(base_path):
