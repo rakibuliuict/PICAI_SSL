@@ -5,8 +5,8 @@ import math
 input_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/patient_ids.txt\patient_ids.txt"
 
 # Output paths
-train_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split\train.txt"
-test_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split\test.txt"
+train_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train.txt"
+test_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/test.txt"
 
 # Step 1: Load all patient IDs from the file
 with open(input_file, "r") as f:
