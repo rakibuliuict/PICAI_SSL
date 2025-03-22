@@ -63,63 +63,6 @@ class PICAIDataset(Dataset):
         image_, label_ = tr_samples
         return image_.float(), label_.long()
 
-
-# class LAHeart(Dataset):
-#     """ LA Dataset """
-
-#     def __init__(self, data_dir, list_dir, split, reverse=False, logging=logging):
-#         self.data_dir = data_dir + "/Training Set"
-#         self.list_dir = list_dir
-#         self.split = split
-#         self.reverse = reverse
-
-#         tr_transform = Compose([
-#             RandomCrop((112, 112, 80)),
-#             ToTensor()
-#         ])
-#         test_transform = Compose([
-#             CenterCrop((112, 112, 80)),
-#             ToTensor()
-#         ])
-
-#         if split == 'train_lab':
-#             data_path = os.path.join(list_dir,'train_lab.txt')
-#             self.transform = tr_transform
-#         elif split == 'train_unlab':
-#             data_path = os.path.join(list_dir,'train_unlab.txt')
-#             self.transform = tr_transform
-#             print("unlab transform")            
-#         else:
-#             data_path = os.path.join(list_dir,'test.txt')
-#             self.transform = test_transform
-
-#         with open(data_path, 'r') as f:
-#             self.image_list = f.readlines()
-
-#         self.image_list = [item.replace('\n', '') for item in self.image_list]
-#         self.image_list = [os.path.join(self.data_dir, item, "mri_norm2.h5") for item in self.image_list]
-
-#         logging.info("{} set: total {} samples".format(split, len(self.image_list)))
-#         logging.info("total {} samples".format(self.image_list))
-
-#     def __len__(self):
-#         if (self.split == "train_lab") | (self.split == "train_unlab"):
-#             return len(self.image_list) * 10
-#         else:
-#             return len(self.image_list)
-
-#     def __getitem__(self, idx):
-#         image_path = self.image_list[idx % len(self.image_list)]
-#         if self.reverse:
-#             image_path = self.image_list[len(self.image_list) - idx % len(self.image_list) - 1]
-#         h5f = h5py.File(image_path, 'r')
-#         image, label = h5f['image'][:], h5f['label'][:].astype(np.float32)
-#         samples = image, label
-#         if self.transform:
-#             tr_samples = self.transform(samples)
-#         image_, label_ = tr_samples
-#         return image_.float(), label_.long()
-
 class CenterCrop(object):
     def __init__(self, output_size):
         self.output_size = output_size
