@@ -2,11 +2,11 @@ import random
 import math
 
 # Path to your input file (update as needed)
-input_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/patient_ids.txt"
+input_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train.txt"
 
 # Output paths
-train_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train.txt"
-test_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/test.txt"
+train_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train_unlab.txt"
+test_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train_lab.txt"
 
 # Step 1: Load all patient IDs from the file
 with open(input_file, "r") as f:
@@ -14,7 +14,7 @@ with open(input_file, "r") as f:
 
 # Step 2: Shuffle and split (80/20)
 random.shuffle(patient_ids)
-split_index = math.floor(0.8 * len(patient_ids))
+split_index = math.floor(0.9 * len(patient_ids))
 train_ids = patient_ids[:split_index]
 test_ids = patient_ids[split_index:]
 
