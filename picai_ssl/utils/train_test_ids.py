@@ -27,5 +27,5 @@ with open(test_file, "w") as f:
     for pid in test_ids:
         f.write(f"{pid}\n")
 
-print(f"✅ Done! {len(train_ids)} IDs in train.txt and {len(test_ids)} IDs in test.txt")
-print(f"📁 Saved:\n  → {train_file}\n  → {test_file}")
+print(f" Done! {len(train_ids)} IDs in train.txt and {len(test_ids)} IDs in test.txt")
+print(f" Saved:\n  → {train_file}\n  → {test_file}")
