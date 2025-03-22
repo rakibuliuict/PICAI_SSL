@@ -74,59 +74,67 @@ class CenterCrop(object):
     def __init__(self, output_size):
         self.output_size = output_size
 
-    def _get_transform(self, label):
-        if label.shape[0] <= self.output_size[0] or label.shape[1] <= self.output_size[1] or label.shape[2] <= self.output_size[2]:
-            pw = max((self.output_size[0] - label.shape[0]) // 2 + 1, 0)
-            ph = max((self.output_size[1] - label.shape[1]) // 2 + 1, 0)
-            pd = max((self.output_size[2] - label.shape[2]) // 2 + 1, 0)
-            label = np.pad(label, [(pw, pw), (ph, ph), (pd, pd)], mode='constant', constant_values=0)
-        else:
-            pw, ph, pd = 0, 0, 0
-
-        (w, h, d) = label.shape
-        w1 = int(round((w - self.output_size[0]) / 2.))
-        h1 = int(round((h - self.output_size[1]) / 2.))
-        d1 = int(round((d - self.output_size[2]) / 2.))
-
-        def do_transform(x):
-            if x.shape[0] <= self.output_size[0] or x.shape[1] <= self.output_size[1] or x.shape[2] <= self.output_size[2]:
-                x = np.pad(x, [(pw, pw), (ph, ph), (pd, pd)], mode='constant', constant_values=0)
-            x = x[w1:w1 + self.output_size[0], h1:h1 + self.output_size[1], d1:d1 + self.output_size[2]]
-            return x
-        return do_transform
-
     def __call__(self, samples):
-        transform = self._get_transform(samples[1])  # Use label to compute crop
-        return [transform(samples[0]), transform(samples[1])]
+        image, label = samples  # image: [C, H, W, D], label: [H, W, D]
+        _, H, W, D = image.shape
+        oH, oW, oD = self.output_size
+
+        start_h = max((H - oH) // 2, 0)
+        start_w = max((W - oW) // 2, 0)
+        start_d = max((D - oD) // 2, 0)
+
+        end_h = start_h + oH
+        end_w = start_w + oW
+        end_d = start_d + oD
+
+        image_cropped = image[:, start_h:end_h, start_w:end_w, start_d:end_d]
+        label_cropped = label[start_h:end_h, start_w:end_w, start_d:end_d]
+
+        return image_cropped, label_cropped
 
 
 class RandomCrop(object):
-    def __init__(self, output_size, with_sdf=False):
+    def __init__(self, output_size):
         self.output_size = output_size
-        self.with_sdf = with_sdf
-
-    def _get_transform(self, x):
-        if x.shape[1] <= self.output_size[1] or x.shape[2] <= self.output_size[2] or x.shape[3] <= self.output_size[2]:
-            pw = max((self.output_size[1] - x.shape[1]) // 2 + 1, 0)
-            ph = max((self.output_size[2] - x.shape[2]) // 2 + 1, 0)
-            pd = max((self.output_size[2] - x.shape[3]) // 2 + 1, 0)
-            x = np.pad(x, [(0, 0), (pw, pw), (ph, ph), (pd, pd)], mode='constant', constant_values=0)
-        else:
-            pw, ph, pd = 0, 0, 0
-
-        _, w, h, d = x.shape
-        w1 = np.random.randint(0, w - self.output_size[1])
-        h1 = np.random.randint(0, h - self.output_size[2])
-        d1 = np.random.randint(0, d - self.output_size[2])
-
-        def do_transform(x):
-            return x[:, w1:w1 + self.output_size[1], h1:h1 + self.output_size[2], d1:d1 + self.output_size[2]]
-
-        return do_transform
 
     def __call__(self, samples):
-        transform = self._get_transform(samples[0][np.newaxis, ...])  # Add batch channel
-        return [transform(samples[0]), transform(samples[1][np.newaxis, ...])[0]]
+        image, label = samples  # image: [C, H, W, D], label: [H, W, D]
+        _, H, W, D = image.shape
+        oH, oW, oD = self.output_size
+
+        if H < oH or W < oW or D < oD:
+            pad_h = max(oH - H, 0)
+            pad_w = max(oW - W, 0)
+            pad_d = max(oD - D, 0)
+
+            pad = (
+                (0, 0),  # channel
+                (pad_h // 2, pad_h - pad_h // 2),
+                (pad_w // 2, pad_w - pad_w // 2),
+                (pad_d // 2, pad_d - pad_d // 2)
+            )
+            image = np.pad(image, pad, mode='constant', constant_values=0)
+            label = np.pad(label, (
+                (pad_h // 2, pad_h - pad_h // 2),
+                (pad_w // 2, pad_w - pad_w // 2),
+                (pad_d // 2, pad_d - pad_d // 2)
+            ), mode='constant', constant_values=0)
+
+            _, H, W, D = image.shape  # Update new shape
+
+        start_h = np.random.randint(0, H - oH + 1)
+        start_w = np.random.randint(0, W - oW + 1)
+        start_d = np.random.randint(0, D - oD + 1)
+
+        end_h = start_h + oH
+        end_w = start_w + oW
+        end_d = start_d + oD
+
+        image_cropped = image[:, start_h:end_h, start_w:end_w, start_d:end_d]
+        label_cropped = label[start_h:end_h, start_w:end_w, start_d:end_d]
+
+        return image_cropped, label_cropped
+
 
 
 class ToTensor(object):
