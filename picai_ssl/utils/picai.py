@@ -4,7 +4,7 @@ import numpy as np
 import h5py
 
 # Path to the dataset root
-base_dir = "/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset"  # 🔁 Update if needed
+base_dir = "/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset"  #  Update if needed
 
 # Loop through each patient folder
 for patient_id in os.listdir(base_dir):
@@ -12,7 +12,7 @@ for patient_id in os.listdir(base_dir):
     if not os.path.isdir(patient_path):
         continue
 
-    print(f"\n📁 Processing {patient_id}")
+    print(f"\n Processing {patient_id}")
 
     # Define paths to each modality
     t2w_path = os.path.join(patient_path, "t2w.nii.gz")
@@ -22,7 +22,7 @@ for patient_id in os.listdir(base_dir):
 
     # Check if all required files exist
     if not all(os.path.exists(p) for p in [t2w_path, adc_path, hbv_path, seg_path]):
-        print(f"⚠️ Missing one or more files for {patient_id}, skipping.")
+        print(f" Missing one or more files for {patient_id}, skipping.")
         continue
 
     try:
@@ -44,9 +44,9 @@ for patient_id in os.listdir(base_dir):
             hf.create_dataset("image/hbv", data=hbv, compression="gzip")
             hf.create_dataset("label/seg", data=seg.astype(np.uint8), compression="gzip")
 
-        print(f"✅ Saved H5 file: {h5_path}")
+        print(f" Saved H5 file: {h5_path}")
 
     except Exception as e:
-        print(f"❌ Failed to process {patient_id}: {e}")
+        print(f" Failed to process {patient_id}: {e}")
 
-print("\n🎉 All valid patients processed into .h5 files.")
+print("\n All valid patients processed into .h5 files.")
