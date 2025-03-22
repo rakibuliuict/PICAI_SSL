@@ -148,6 +148,8 @@ class ToTensor(object):
 if __name__ == '__main__':
     data_dir = '/content/drive/MyDrive/SemiSL/Dataset/2018_UTAH_MICCAI'
     list_dir = '/content/drive/MyDrive/SemiSL/Code/Basecode/Datasets/la/data_split'
+
+    
     labset = LAHeart(data_dir, list_dir,split='lab')
     unlabset = LAHeart(data_dir,list_dir,split='unlab')
     trainset = LAHeart(data_dir,list_dir,split='train')
