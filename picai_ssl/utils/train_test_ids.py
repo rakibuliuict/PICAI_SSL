@@ -2,7 +2,7 @@ import random
 import math
 
 # Path to your input file (update as needed)
-input_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/patient_ids.txt\patient_ids.txt"
+input_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/patient_ids.txt"
 
 # Output paths
 train_file = "/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split/train.txt"
