@@ -230,10 +230,10 @@ if __name__ == '__main__':
     # trainset = LAHeart(data_dir,list_dir,split='train', aug_times=5)
     # testset = LAHeart(data_dir, list_dir,split='test', aug_times=5)
 
-    labset = LAHeart(data_dir, list_dir, split='lab')  # No aug_times
-    unlabset = LAHeart(data_dir, list_dir, split='unlab')
-    trainset = LAHeart(data_dir, list_dir, split='train')
-    testset = LAHeart(data_dir, list_dir, split='test')
+    labset = PICAIDataset(data_dir, list_dir, split='lab')  # No aug_times
+    unlabset = PICAIDataset(data_dir, list_dir, split='unlab')
+    trainset = PICAIDataset(data_dir, list_dir, split='train')
+    testset = PICAIDataset(data_dir, list_dir, split='test')
 
 
     lab_sample = labset[0]
