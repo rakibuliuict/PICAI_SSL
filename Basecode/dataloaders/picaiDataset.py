@@ -146,7 +146,7 @@ class ToTensor(object):
 
 if __name__ == '__main__':
     data_dir = '/content/drive/MyDrive/SemiSL/Dataset/PICAI_dataset'
-    list_dir = '/content/drive/MyDrive/SemiSL/Code/Basecode/Datasets/picai/data_split'
+    list_dir = '/content/drive/MyDrive/SemiSL/Code/PICAI_SSL/Basecode/Datasets/picai/data_split'
     labset = PICAIDataset(data_dir, list_dir,split='lab')
     unlabset = PICAIDataset(data_dir,list_dir,split='unlab')
     trainset = PICAIDataset(data_dir,list_dir,split='train')
