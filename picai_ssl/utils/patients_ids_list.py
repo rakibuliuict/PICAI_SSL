@@ -20,9 +20,9 @@ else:
 print("\n Patients with case_csPCa == 'Yes':")
 print(patient_ids)
 
-# Save to CSV
-output_df = pd.DataFrame({'patient_id': patient_ids})
-output_path = r"C:\Users\User\Downloads\picai_labels-main\picai_labels-main\csPCa_patient_ids.csv"
-output_df.to_csv(output_path, index=False)
+# # Save to CSV
+# output_df = pd.DataFrame({'patient_id': patient_ids})
+# output_path = r"C:\Users\User\Downloads\picai_labels-main\picai_labels-main\csPCa_patient_ids.csv"
+# output_df.to_csv(output_path, index=False)
 
-print(f"\n Saved patient_ids to: {output_path}")
+# print(f"\n Saved patient_ids to: {output_path}")
