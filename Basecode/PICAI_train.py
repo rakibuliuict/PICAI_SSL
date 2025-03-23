@@ -32,8 +32,8 @@ from utils.LA_utils import to_cuda
 from utils.BCP_utils_picai import *
 from pancreas.losses import *
 
-# from pancreas.Vnet import VNet
-from networks.VNet_picai import VNet
+from pancreas.Vnet import VNet
+# from networks.VNet_picai import VNet
 from networks.ResVNet import ResVNet
 
 parser = argparse.ArgumentParser()
@@ -63,7 +63,7 @@ args = parser.parse_args()
 
 
 def create_Vnet(ema=False):
-    net = VNet(n_channels=1, n_classes=2, normalization='instancenorm', has_dropout=True)
+    net = VNet(n_channels=3, n_classes=2, normalization='instancenorm', has_dropout=True)
     net = nn.DataParallel(net)
     model = net.cuda()
     if ema:
@@ -158,7 +158,7 @@ if args.deterministic:
     random.seed(args.seed)
     np.random.seed(args.seed)
 
-patch_size = (112, 112, 80)
+patch_size = (256, 256, 20)
 num_classes = 2
 
 
