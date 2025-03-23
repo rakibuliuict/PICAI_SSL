@@ -76,7 +76,7 @@ class OutputTransition(nn.Module):
         return self.conv2(self.conv_block(x))
 
 class VNet(nn.Module):
-    def __init__(self, spatial_dims=3, in_channels=1, out_channels=1, act=("elu", {"inplace": True}), dropout_prob_down=0.5, dropout_prob_up=(0.5, 0.5), bias=False):
+    def __init__(self, spatial_dims=3, in_channels=3, out_channels=1, act=("elu", {"inplace": True}), dropout_prob_down=0.5, dropout_prob_up=(0.5, 0.5), bias=False):
         super().__init__()
         self.in_tr = InputTransition(spatial_dims, in_channels, 16, act, bias=bias)
         self.down_tr32 = DownTransition(spatial_dims, 16, 1, act, bias=bias)
