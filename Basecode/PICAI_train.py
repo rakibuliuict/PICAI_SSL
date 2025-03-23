@@ -32,7 +32,8 @@ from utils.LA_utils import to_cuda
 from utils.BCP_utils_picai import *
 from pancreas.losses import *
 
-from pancreas.Vnet import VNet
+# from pancreas.Vnet import VNet
+from networks.VNet_picai import VNet
 from networks.ResVNet import ResVNet
 
 parser = argparse.ArgumentParser()
