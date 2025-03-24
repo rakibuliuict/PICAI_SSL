@@ -238,12 +238,12 @@ def pre_train(args, snapshot_path):
             label_batch = lab_a * img_mask + lab_b * (1 - img_mask)
 
             outputs, _ = model(volume_batch)
-            loss_ce = F.cross_entropy(outputs, label_batch)
+            loss_ce = F.cross_entropy(outputs, label_batch.float())
             loss_dice = DICE(outputs, label_batch)
             loss = (loss_ce + loss_dice) / 2
 
             outputs2, _ = model2(volume_batch)
-            loss_ce2 = F.cross_entropy(outputs2, label_batch)
+            loss_ce2 = F.cross_entropy(outputs2, label_batch.float())
             loss_dice2 = DICE(outputs2, label_batch)
             loss2 = (loss_ce2 + loss_dice2) / 2
 
