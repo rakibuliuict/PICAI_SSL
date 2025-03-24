@@ -160,7 +160,7 @@ if args.deterministic:
     np.random.seed(args.seed)
 
 patch_size = (256, 256, 20)
-num_classes = 2
+num_classes = 1
 
 
 def load_net_opt(net, optimizer, path):
