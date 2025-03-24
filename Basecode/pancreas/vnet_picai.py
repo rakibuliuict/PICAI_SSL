@@ -64,13 +64,12 @@ class DownsamplingConvBlock(nn.Module):
 #         return self.conv(x)
 
 class UpsamplingDeconvBlock(nn.Module):
-    def __init__(self, n_filters_in, n_filters_out, stride=2, normalization='none'):
+    def __init__(self, n_filters_in, n_filters_out, stride=(2, 2, 1), normalization='none'):
         super(UpsamplingDeconvBlock, self).__init__()
 
         ops = []
-        kernel_size = stride  # Typically use same value for stride and kernel_size for upsampling
         if normalization != 'none':
-            ops.append(nn.ConvTranspose3d(n_filters_in, n_filters_out, kernel_size=kernel_size, stride=stride))
+            ops.append(nn.ConvTranspose3d(n_filters_in, n_filters_out, kernel_size=stride, stride=stride))
             if normalization == 'batchnorm':
                 ops.append(nn.BatchNorm3d(n_filters_out))
             elif normalization == 'groupnorm':
@@ -80,13 +79,14 @@ class UpsamplingDeconvBlock(nn.Module):
             else:
                 raise ValueError("Unsupported normalization type.")
         else:
-            ops.append(nn.ConvTranspose3d(n_filters_in, n_filters_out, kernel_size=kernel_size, stride=stride))
+            ops.append(nn.ConvTranspose3d(n_filters_in, n_filters_out, kernel_size=stride, stride=stride))
 
         ops.append(nn.ReLU(inplace=True))
         self.conv = nn.Sequential(*ops)
 
     def forward(self, x):
         return self.conv(x)
+
 
 
 
@@ -107,17 +107,24 @@ class VNet(nn.Module):
         self.block_four = ConvBlock(3, n_filters * 8, n_filters * 8, normalization)
         self.block_four_dw = DownsamplingConvBlock(n_filters * 8, n_filters * 16, normalization=normalization)
 
-        self.block_five = ConvBlock(3, n_filters * 16, n_filters * 16, normalization)
-        self.block_five_up = UpsamplingDeconvBlock(n_filters * 16, n_filters * 8, normalization=normalization)
+        # self.block_five = ConvBlock(3, n_filters * 16, n_filters * 16, normalization)
+        # self.block_five_up = UpsamplingDeconvBlock(n_filters * 16, n_filters * 8, normalization=normalization)
 
-        self.block_six = ConvBlock(3, n_filters * 8, n_filters * 8, normalization)
-        self.block_six_up = UpsamplingDeconvBlock(n_filters * 8, n_filters * 4, normalization=normalization)
+        # self.block_six = ConvBlock(3, n_filters * 8, n_filters * 8, normalization)
+        # self.block_six_up = UpsamplingDeconvBlock(n_filters * 8, n_filters * 4, normalization=normalization)
 
-        self.block_seven = ConvBlock(3, n_filters * 4, n_filters * 4, normalization)
-        self.block_seven_up = UpsamplingDeconvBlock(n_filters * 4, n_filters * 2, normalization=normalization)
+        # self.block_seven = ConvBlock(3, n_filters * 4, n_filters * 4, normalization)
+        # self.block_seven_up = UpsamplingDeconvBlock(n_filters * 4, n_filters * 2, normalization=normalization)
 
-        self.block_eight = ConvBlock(2, n_filters * 2, n_filters * 2, normalization)
-        self.block_eight_up = UpsamplingDeconvBlock(n_filters * 2, n_filters, normalization=normalization)
+        # self.block_eight = ConvBlock(2, n_filters * 2, n_filters * 2, normalization)
+        # self.block_eight_up = UpsamplingDeconvBlock(n_filters * 2, n_filters, normalization=normalization)
+
+        self.block_five_up = UpsamplingDeconvBlock(n_filters * 16, n_filters * 8, stride=(2, 2, 1), normalization=normalization)
+        self.block_six_up = UpsamplingDeconvBlock(n_filters * 8, n_filters * 4, stride=(2, 2, 1), normalization=normalization)
+        
+        self.block_seven_up = UpsamplingDeconvBlock(n_filters * 4, n_filters * 2, stride=(2, 2, 1), normalization=normalization)
+        self.block_eight_up = UpsamplingDeconvBlock(n_filters * 2, n_filters, stride=(2, 2, 1), normalization=normalization)
+
 
         self.final_block = ConvBlock(1, n_filters, n_filters, normalization)
         self.out_conv = nn.Conv3d(n_filters, n_classes, kernel_size=1)
