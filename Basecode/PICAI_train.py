@@ -30,7 +30,7 @@ from dataloaders.picaiDataset import PICAIDataset
 from utils.BCP_utils import context_mask, mix_loss, parameter_sharing, update_ema_variables
 from utils.LA_utils import to_cuda
 from utils.BCP_utils_picai import *
-from pancreas.losses import *
+from pancreas.losses_picai_0 import *
 
 # from pancreas.Vnet import VNet
 from pancreas.vnet_picai import VNet
